@@ -4,8 +4,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.platform.commons.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 
 class CarTest {
 
@@ -66,5 +70,20 @@ class CarTest {
         Assertions.assertThat(car.getPosition()).isEqualTo(n);
     }
 
-
+    @DisplayName("자동차가 {0}번 정지하였다면 위치는 계속 기존과 같은 위치여야한다.")
+    @ParameterizedTest
+    @CsvSource(value = {"1,0", "3,1", "10,2"})
+    void stop_자동차가_N번_정지하였다면_위치는_계속_기존위치여야한다(int n, int position) throws NoSuchFieldException, IllegalAccessException {
+        // given
+        Car car = new Car("hi");
+        Field field = car.getClass().getDeclaredField("position");
+        field.setAccessible(true);
+        field.setInt(car, position);
+        // when
+        for (int i = 0; i < n; i++) {
+            car.stop();
+        }
+        // then
+        Assertions.assertThat(car.getPosition()).isEqualTo(position);
+    }
 }

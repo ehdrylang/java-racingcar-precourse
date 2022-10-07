@@ -48,4 +48,7 @@ public class Car {
     public void go() {
         this.position++;
     }
+    public void stop() {
+        // position 변경하지 않음
+    }
 }
