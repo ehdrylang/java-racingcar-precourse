@@ -2,12 +2,14 @@ package racingcar.model;
 
 public class Car {
     private final String name;
+    private int position;
 
     public Car(String name) {
         if (!isValidName(name)) {
             throw new IllegalArgumentException();
         }
         this.name = name;
+        this.position = 0;
     }
 
     private boolean isValidName(String name) {
@@ -37,5 +39,13 @@ public class Car {
 
     public String getName() {
         return name;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void go() {
+        this.position++;
     }
 }

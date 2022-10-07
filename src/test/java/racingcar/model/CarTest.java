@@ -2,6 +2,7 @@ package racingcar.model;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -41,6 +42,28 @@ class CarTest {
     void constructor_자동차_이름_앞뒤에_빈문자열이_오면_예외가_발생한다(String name) {
         Assertions.assertThatThrownBy(() -> new Car(name))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("자동차가 생성되면 초기 위치는 0이다.")
+    @Test
+    void constructor_자동차_이름_앞뒤에_빈문자열이_오면_예외가_발생한다() {
+        // when
+        Car car = new Car("hi");
+        // then
+        Assertions.assertThat(car.getPosition()).isEqualTo(0);
+    }
+
+    @DisplayName("자동차가 {0}번 전진하면 {0}만큼 이동한다.")
+    @ValueSource(ints = {1, 2, 3, 4, 5})
+    @ParameterizedTest
+    void go_자동차가_N번_전진하면_자동차의_위치는_N만큼_이동한다(int n) {
+        // when
+        Car car = new Car("hi");
+        for (int i = 0; i < n; i++) {
+            car.go();
+        }
+        // then
+        Assertions.assertThat(car.getPosition()).isEqualTo(n);
     }
 
 
