@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 
@@ -85,5 +84,25 @@ class CarTest {
         }
         // then
         Assertions.assertThat(car.getPosition()).isEqualTo(position);
+    }
+
+    @DisplayName("자동차를 출력할 때 이름과 위치가 함께 표시되어야한다.")
+    @ParameterizedTest
+    @CsvSource(value = {"hi,0", "hello,1", "world,2", "jdk,5"})
+    void toString_자동차를_출력할때_이름과_위치가_함께_표시된다(String name, int position) throws NoSuchFieldException, IllegalAccessException {
+        // given
+        Car car = new Car(name);
+        Field field = car.getClass().getDeclaredField("position");
+        field.setAccessible(true);
+        field.setInt(car, position);
+
+        long count = car.toString()
+                .chars()
+                .filter(ch -> ch == Car.POSITION_UNIT)
+                .count();
+
+        // when then
+        Assertions.assertThat(car.toString()).contains(name);
+        Assertions.assertThat(count).isEqualTo(position);
     }
 }

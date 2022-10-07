@@ -1,6 +1,7 @@
 package racingcar.model;
 
 public class Car {
+    public static final char POSITION_UNIT = '-';
     private final String name;
     private int position;
 
@@ -48,7 +49,21 @@ public class Car {
     public void go() {
         this.position++;
     }
+
     public void stop() {
         // position 변경하지 않음
+    }
+
+    private String convertPosition() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < position; i++) {
+            sb.append(POSITION_UNIT);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return name + " : " + convertPosition();
     }
 }
