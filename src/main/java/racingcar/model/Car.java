@@ -7,7 +7,7 @@ public class Car {
 
     public Car(String name) {
         if (!isValidName(name)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("자동차 이름이 유효하지 않습니다! name=" + name);
         }
         this.name = name;
         this.position = 0;

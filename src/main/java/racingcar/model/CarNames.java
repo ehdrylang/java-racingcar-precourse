@@ -11,7 +11,7 @@ public class CarNames {
 
     public CarNames(String names) {
         if (!isValidNames(names)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유효하지 않은 이름이 있습니다. names=" + names);
         }
         this.names = names;
     }

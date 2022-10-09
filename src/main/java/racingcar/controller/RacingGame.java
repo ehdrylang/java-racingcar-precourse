@@ -6,9 +6,12 @@ import racingcar.model.CarCollection;
 import racingcar.model.CarNames;
 import racingcar.view.Viewer;
 
+import java.util.List;
+
 public class RacingGame {
     private static final int MIN = 0;
     private static final int MAX = 9;
+    private static final String JOIN_DELIMITER = ",";
     private final Viewer viewer;
     private CarCollection racingCars;
 
@@ -17,10 +20,30 @@ public class RacingGame {
     }
 
     public void start() {
-        racingCars = createRacingCars();
+        createRacingCars();
         AttemptCount attemptCount = getAttemptCount();
         cycle(attemptCount.getCount());
+        printWinner();
+    }
 
+    private void printWinner() {
+        String winner = findWinner();
+        viewer.printWinner(winner);
+    }
+
+    private String findWinner() {
+        List<String> first = racingCars.findFirst();
+        return joinWinner(first);
+    }
+
+    private String joinWinner(List<String> first) {
+        StringBuilder sb = new StringBuilder();
+        for (String name : first) {
+            sb.append(name);
+            sb.append(JOIN_DELIMITER);
+        }
+        sb.delete(sb.lastIndexOf(JOIN_DELIMITER), sb.length());
+        return sb.toString();
     }
 
     private void cycle(int count) {
@@ -35,8 +58,21 @@ public class RacingGame {
     }
 
     private AttemptCount getAttemptCount() {
-        String attemptCount = viewer.inputAttemptCount();
-        return new AttemptCount(attemptCount);
+        AttemptCount count;
+        do {
+            count = createAttemptCount();
+        } while (count == null);
+        return count;
+    }
+
+    private AttemptCount createAttemptCount() {
+        try {
+            String attemptCount = viewer.inputAttemptCount();
+            return new AttemptCount(attemptCount);
+        } catch (Exception e) {
+            viewer.printErrorMessage(e.getMessage());
+        }
+        return null;
     }
 
     private void race() {
@@ -57,10 +93,21 @@ public class RacingGame {
         return Randoms.pickNumberInRange(MIN, MAX) >= 4;
     }
 
-    private CarCollection createRacingCars() {
-        String carNames = viewer.inputCarNames();
-        CarNames names = new CarNames(carNames);
-        return new CarCollection(names);
+    private void createRacingCars() {
+        do {
+            String carNames = viewer.inputCarNames();
+            racingCars = getCarCollection(carNames);
+        } while (racingCars == null);
+    }
+
+    private CarCollection getCarCollection(String carNames) {
+        try {
+            CarNames names = new CarNames(carNames);
+            return new CarCollection(names);
+        } catch (Exception e) {
+            viewer.printErrorMessage(e.getMessage());
+        }
+        return null;
     }
 
 }

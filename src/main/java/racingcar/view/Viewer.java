@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Console;
 
 public class Viewer {
     private static final String ERROR_PREFIX = "[ERROR] ";
+
     public String inputCarNames() {
         System.out.println(InputText.CAR_NAME.getText());
         return Console.readLine();
@@ -20,5 +21,9 @@ public class Viewer {
 
     public void printErrorMessage(String errorMessage) {
         System.out.println(ERROR_PREFIX + errorMessage);
+    }
+
+    public void printWinner(String winner) {
+        System.out.println(OutputText.WINNER.getText() + winner);
     }
 }
