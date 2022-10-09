@@ -18,11 +18,20 @@ public class RacingGame {
 
     public void start() {
         racingCars = createRacingCars();
-        AttemptCount count = getAttemptCount();
-        for (int i = 0; i < count.getCount(); i++) {
-            race(racingCars.getCarCount());
-        }
+        AttemptCount attemptCount = getAttemptCount();
+        cycle(attemptCount.getCount());
 
+    }
+
+    private void cycle(int count) {
+        for (int i = 0; i < count; i++) {
+            race();
+            showCurrentStatus();
+        }
+    }
+
+    private void showCurrentStatus() {
+        viewer.print(racingCars.toString());
     }
 
     private AttemptCount getAttemptCount() {
@@ -30,8 +39,8 @@ public class RacingGame {
         return new AttemptCount(attemptCount);
     }
 
-    private void race(int carCount) {
-        for (int i = 0; i < carCount; i++) {
+    private void race() {
+        for (int i = 0; i < racingCars.getCarCount(); i++) {
             move(i);
         }
     }

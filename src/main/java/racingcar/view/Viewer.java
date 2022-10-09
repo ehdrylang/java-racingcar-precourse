@@ -14,6 +14,10 @@ public class Viewer {
         return Console.readLine();
     }
 
+    public void print(String message) {
+        System.out.println(message);
+    }
+
     public void printErrorMessage(String errorMessage) {
         System.out.println(ERROR_PREFIX + errorMessage);
     }
